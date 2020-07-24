@@ -15,7 +15,11 @@ function* fetchProfile(action) {
 }
 
 function* profileSaga () {
-    yield takeEvery(FETCHING_PROFILE_DATA, fetchProfile);
+    /**
+     * takeEvery observe from dispatch from user.
+     * README: after progressed takeEvery => dispatch to Reducer.
+    */
+    yield takeEvery(FETCHING_PROFILE_DATA, fetchProfile); 
 }
 
 export default profileSaga;
