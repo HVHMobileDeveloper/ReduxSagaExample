@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { increment, decrement } from '../../redux/counter';
+import { fetchProfileData } from '../../redux/profileInfo';
 
 const Login = (props) => {
 
@@ -9,21 +10,34 @@ const Login = (props) => {
 
     const _increment = () => { dispatch(increment())} ;
     const _decrement = () => { dispatch(decrement())};
+    const _fetchProfile = () => {dispatch(fetchProfileData())};
 
-    const {value} = useSelector(state => state.ReducerCounter)
+    const { ReducerCounter, ReducerProfile} = useSelector(state => state);
+
+    useEffect(() =>{
+        console.log('Use effect')
+    })
+
+    const {value} = ReducerCounter
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity onPress={_increment} style={styles.myButton}>
-                <Text style={styles.myButtonTitle}>InCrement</Text>
-            </TouchableOpacity>
+        <SafeAreaView style={{...styles.container, flexDirection: 'column'}}>
+            <View style={styles.container}>
+                <TouchableOpacity onPress={_increment} style={styles.myButton}>
+                    <Text style={styles.myButtonTitle}>InCrement</Text>
+                </TouchableOpacity>
 
-            <Text style={styles.myTextCount}>{`${value}`}</Text>
+                <Text style={styles.myTextCount}>{`${value}`}</Text>
 
-            <TouchableOpacity onPress={_decrement} style={styles.myButton}>
-                <Text style={styles.myButtonTitle}>DeCrement</Text>
+                <TouchableOpacity onPress={_decrement} style={styles.myButton}>
+                    <Text style={styles.myButtonTitle}>DeCrement</Text>
+                </TouchableOpacity>
+            </View>
+            <Text>{`${JSON.stringify(ReducerProfile)}`}</Text>
+            <TouchableOpacity onPress={_fetchProfile} style={{ ...styles.myButton, width: 200}}>
+                <Text style={styles.myButtonTitle}>Fetch User Info</Text>
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     )
 }
 

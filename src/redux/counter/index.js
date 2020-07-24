@@ -20,7 +20,7 @@ export const decrement = () => {
 const initCounter = { value: 0 }
 
 const ReducerCounter = (state = initCounter, action) => {
-    // console.log(`state ${JSON.stringify(state)}- action ${JSON.stringify(action)}`)
+    console.log(`REDUCER COUNTER => state ${JSON.stringify(state)}- action ${JSON.stringify(action)}\n`)
     switch (action.type) {
         case INCREMENT:
             return {value: ++state.value};
