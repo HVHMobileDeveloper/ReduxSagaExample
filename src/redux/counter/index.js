@@ -1,7 +1,7 @@
 
 //ACTION TYPE:
-const INCREMENT = 'INCREMENT';
-const DEREMENT = 'DECREMENT';
+export const INCREMENT = 'INCREMENT';
+export const DEREMENT = 'DECREMENT';
 
 //ACTION:
 export const increment = () => {
@@ -23,11 +23,9 @@ const ReducerCounter = (state = initCounter, action) => {
     // console.log(`state ${JSON.stringify(state)}- action ${JSON.stringify(action)}`)
     switch (action.type) {
         case INCREMENT:
-            const {value} = state
-            return {value: ++value};
+            return {value: ++state.value};
         case DEREMENT:
-            const { value } = state
-            return {value: --value};
+            return {value: --state.value};
         default:
             return state
     }
