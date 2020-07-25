@@ -7,7 +7,7 @@ function* fetchProfile(action) {
     console.log(`SAGA with action: ${JSON.stringify(action)}`);
     try {
         const data = yield GET_PROFILE_API();
-        //put: dispatch
+        //put: dispatch to reducer
         yield put({type: GET_PROFILE_SUCCESSFUL, data})
     } catch (error) {
         yield put({type: GET_PROFILE_ERROR})
