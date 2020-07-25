@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { increment, decrement } from '../../redux/counter';
@@ -6,22 +6,46 @@ import { fetchProfileData } from '../../redux/profileInfo';
 
 const Login = (props) => {
 
+    /**
+     * USER DISPATCH
+     */
     const dispatch = useDispatch();
 
-    const _increment = () => { dispatch(increment())} ;
-    const _decrement = () => { dispatch(decrement())};
-    const _fetchProfile = () => {dispatch(fetchProfileData())};
+    const _increment = () => { dispatch(increment()) };
+    const _decrement = () => { dispatch(decrement()) };
+    const _fetchProfile = () => { dispatch(fetchProfileData()) };
 
-    const { ReducerCounter, ReducerProfile} = useSelector(state => state);
+    /**
+     * USE SELECTOR
+     */
+    const { ReducerCounter, ReducerProfile } = useSelector(state => state);
 
-    useEffect(() =>{
+    useEffect(() => {
         console.log('Use effect')
     })
 
-    const {value} = ReducerCounter
+    const { value } = ReducerCounter
+
+    /**
+     * USE MEMO
+     */
+    const [memo, setMemo] = useState(0);
+
+    const onSetMemo = () => { setMemo(0) };
+
+    const _VIEW_MEMO = useMemo(
+        () =>
+            <Text style={{ width: 100, height: 30, color: 'red' }}>{`${memo}`}</Text>
+        ,
+        [memo]
+    );
+
+    /**
+     * USE CALLBACK
+     */
 
     return (
-        <SafeAreaView style={{...styles.container, flexDirection: 'column'}}>
+        <SafeAreaView style={{ ...styles.container, flexDirection: 'column' }}>
             <View style={styles.container}>
                 <TouchableOpacity onPress={_increment} style={styles.myButton}>
                     <Text style={styles.myButtonTitle}>InCrement</Text>
@@ -34,9 +58,14 @@ const Login = (props) => {
                 </TouchableOpacity>
             </View>
             <Text>{`${JSON.stringify(ReducerProfile)}`}</Text>
-            <TouchableOpacity onPress={_fetchProfile} style={{ ...styles.myButton, width: 200}}>
+            <TouchableOpacity onPress={_fetchProfile} style={{ ...styles.myButton, width: 200 }}>
                 <Text style={styles.myButtonTitle}>Fetch User Info</Text>
             </TouchableOpacity>
+            {_VIEW_MEMO}
+            <TouchableOpacity onPress={onSetMemo} style={{ ...styles.myButton, width: 200 }}>
+                <Text style={styles.myButtonTitle}>Use Memo</Text>
+            </TouchableOpacity>
+
         </SafeAreaView>
     )
 }
