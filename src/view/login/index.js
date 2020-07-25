@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { increment, decrement } from '../../redux/counter';
@@ -31,18 +31,22 @@ const Login = (props) => {
      */
     const [memo, setMemo] = useState(0);
 
-    const onSetMemo = () => { setMemo(0) };
+    const onSetMemo = () => { setMemo(memo + 1) };
 
     const _VIEW_MEMO = useMemo(
         () =>
             <Text style={{ width: 100, height: 30, color: 'red' }}>{`${memo}`}</Text>
         ,
+        //README: something like add stack to memories => get from stack to compare with the new input.
         [memo]
     );
 
     /**
      * USE CALLBACK
      */
+    const [callbackValue, setCallBackValue] = useState(0);
+    
+    const onsetCallbackValue = useCallback(() => setCallBackValue(0), [callbackValue])
 
     return (
         <SafeAreaView style={{ ...styles.container, flexDirection: 'column' }}>
@@ -61,12 +65,29 @@ const Login = (props) => {
             <TouchableOpacity onPress={_fetchProfile} style={{ ...styles.myButton, width: 200 }}>
                 <Text style={styles.myButtonTitle}>Fetch User Info</Text>
             </TouchableOpacity>
+
             {_VIEW_MEMO}
             <TouchableOpacity onPress={onSetMemo} style={{ ...styles.myButton, width: 200 }}>
                 <Text style={styles.myButtonTitle}>Use Memo</Text>
             </TouchableOpacity>
 
+            <Text>{callbackValue}</Text>
+
+            <HvhButton
+                title={`Use CallBack`}
+                onClickListener={onsetCallbackValue}
+            />
+
+
         </SafeAreaView>
+    )
+}
+
+export const HvhButton = ({ title = '', onClickListener = () => { }, btnStyle, titleBtnStyle }) => {
+    return (
+        <TouchableOpacity style={{ ...btnStyle, width: 100, height: 50, backgroundColor: 'red', justifyContent: 'center' }} onPress={onClickListener}>
+            <Text style={{ ...titleBtnStyle, color: 'white', alignSelf: 'center' }}>{title}</Text>
+        </TouchableOpacity>
     )
 }
 
